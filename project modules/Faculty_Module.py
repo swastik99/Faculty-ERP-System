@@ -8,7 +8,7 @@ from ttkthemes import themed_tk as tk
 import mysql.connector
 
 fullname = "Ankit Vishnoi"
-class Add:
+class add:
     def addmod(self):
         rootadd = tk.ThemedTk()
         rootadd.get_themes()
@@ -21,14 +21,14 @@ class Add:
         addrphoto = Label(rootadd, image=addrImage)
         addrphoto.pack(pady=20)
 
-        Fullname = StringVar()
+        #Fullname = StringVar()
         ModuleName = StringVar()
         Platform = StringVar()
         Date = StringVar()
         link = StringVar()
 
         def database():
-            name = Fullname.get()
+            name = fullname
             Module = ModuleName.get()
             platform = Platform.get()
             date = Date.get()
@@ -47,10 +47,11 @@ class Add:
                 return False
 
             def valid_name(name):
-                if fullname == name:
+                pass
+                '''if fullname == name:
                     return True
                 else:
-                    return False
+                    return False'''
 
             cur = conn.cursor()
             cur.execute(
@@ -75,8 +76,7 @@ class Add:
                                                                     doclink))
                                     time.sleep(1)
                                     rootadd.destroy()
-                                    mu.menu()
-
+                                    dir.mnu()
                                 except:
                                     tkinter.messagebox.showerror("Invalid Module",
                                                                  "Either same module name or link has already being stored in the database...\nPlease enter a new one")
@@ -97,7 +97,7 @@ class Add:
                               font="Times 10 italic")
         statusbar.pack(side=BOTTOM, fill=X)
 
-        subbtn = ttk.Button(rootadd, text='Add Module', width=20, command=database)
+        subbtn = ttk.Button(rootadd, text='Add Module', width=40, command=database)
         subbtn.pack(side=BOTTOM, pady=20)
 
         leftframe = Frame(rootadd)
@@ -108,12 +108,14 @@ class Add:
 
         label_1 = Label(leftframe, text="Faculty Full Name", font="fixedsys 10 normal")
         label_1.pack(pady=10)
-        entry_1 = ttk.Entry(rightframe, textvar=Fullname, width=60)
+        entry_1 = Label(rightframe, font="Times 12 normal", width=60)
         entry_1.pack(pady=10)
+        entry_1['text'] = fullname
+        entry_1['relief'] = SUNKEN
 
         label_2 = Label(leftframe, text="Name of Module", font="fixedsys 10 normal")
-        label_2.pack(pady=10)
-        entry_2 = ttk.Entry(rightframe, textvar=ModuleName, width=60)
+        label_2.pack(pady=15)
+        entry_2 = ttk.Entry(rightframe,font="Times 12 normal", textvar=ModuleName, width=68)
         entry_2.pack(pady=10)
 
         label_3 = Label(leftframe, text="Platform of module", font="fixedsys 10 normal")
@@ -121,29 +123,29 @@ class Add:
         list = ['', 'E-PG-Pathshala', 'CEC(Under Graduate) ', 'SWAYAM', 'MOOCs platform',
                 'NPTEL/NMEICT/any other Government initiatives'];
         droplist = ttk.OptionMenu(rightframe, Platform, *list)
-        droplist.config(width=43)
+        droplist.config(width=65)
         Platform.set('Select your Platform')
         droplist.pack(pady=10)
 
         label_4 = Label(leftframe, text="Date of Launching", font="fixedsys 10 normal")
-        label_4.pack(pady=10)
-        entry_4 = ttk.Entry(rightframe, textvar=Date, width=60)
+        label_4.pack(pady=15)
+        entry_4 = ttk.Entry(rightframe,font="Times 12 normal", textvar=Date, width=68)
         entry_4.pack(pady=10)
 
         label_5 = Label(leftframe, text="Link of the document", font="fixedsys 10 normal")
         label_5.pack(pady=10)
-        entry_5 = ttk.Entry(rightframe, textvar=link, width=60)
+        entry_5 = ttk.Entry(rightframe, font="Times 12 normal", textvar=link, width=68)
         entry_5.pack(pady=10)
 
         rootadd.resizable(0, 0)
 
         rootadd.mainloop()
 
-class mnu(Add):
+class mnu(add):
 
     def menu(self,Module):
         print(Module)
 
-add = Add()
+add = add()
 mu = mnu()
 add.addmod()

@@ -8,6 +8,7 @@ import time
 import re
 import xlsxwriter
 
+
 class firstpage:
 
     def auth(self):
@@ -57,6 +58,7 @@ class firstpage:
         main.resizable(0, 0)
 
         main.mainloop()
+
 
 class sign_in:
     def register(self):
@@ -190,6 +192,7 @@ class sign_in:
 
         master.mainloop()
 
+
 class sign_up:
     def login(self):
         rootl = tk.ThemedTk()
@@ -295,6 +298,7 @@ class sign_up:
         rootl.resizable(0, 0)
         rootl.mainloop()
 
+
 class mnu:
     def menu(self):
         rootmnu = tk.ThemedTk()
@@ -397,6 +401,7 @@ class mnu:
 
         rootmnu.mainloop()
 
+
 class add:
     def addmod(self):
         rootadd = tk.ThemedTk()
@@ -410,14 +415,14 @@ class add:
         addrphoto = Label(rootadd, image=addrImage)
         addrphoto.pack(pady=20)
 
-        Fullname = StringVar()
+        # Fullname = StringVar()
         ModuleName = StringVar()
         Platform = StringVar()
         Date = StringVar()
         link = StringVar()
 
         def database():
-            name = Fullname.get()
+            name = fullname
             Module = ModuleName.get()
             platform = Platform.get()
             date = Date.get()
@@ -435,57 +440,48 @@ class add:
                     pass
                 return False
 
-            def valid_name(name):
-                if fullname == name:
-                    return True
-                else:
-                    return False
-
             cur = conn.cursor()
             cur.execute(
                 'CREATE TABLE IF NOT EXISTS Faculty_Module(Faculty VARCHAR(75),Module_Name VARCHAR(150) UNIQUE,Platform VARCHAR(120), Launch_Date VARCHAR(10),Link VARCHAR(500) UNIQUE)')
-            if name != '' and valid_name(name):
-                if Module != '':
-                    if platform != '':
-                        if date != '' and valid_date(datestring):
-                            if doclink != '':
-                                try:
-                                    cur.execute(
-                                        'INSERT INTO Faculty_Module(Faculty,Module_Name,Platform,Launch_Date,Link) VALUES(%s,%s,%s,%s,%s)',
-                                        (name, Module, platform, date, doclink,))
-                                    conn.commit()
-                                    statusbar['text'] = 'Hurray!! Record Added Successfully ' + name
-                                    tkinter.messagebox.showinfo('Status',
-                                                                'New Record Added Succesfully\nFaculty Name : ' + str(
-                                                                    name) + '\nModule Name : ' + str(
-                                                                    Module) + '\nPlatform on which module is developed : ' + str(
-                                                                    platform) + '\nDate of Launching : ' + str(
-                                                                    date) + '\nLink for the module :' + str(
-                                                                    doclink))
-                                    time.sleep(1)
-                                    rootadd.destroy()
-                                    dir.menu()
-                                except:
-                                    tkinter.messagebox.showerror("Invalid Module",
-                                                                 "Either same module name or link has already being stored in the database...\nPlease enter a new one")
+            if Module != '':
+                if platform != '':
+                    if date != '' and valid_date(datestring):
+                        if doclink != '':
+                            try:
+                                cur.execute(
+                                    'INSERT INTO Faculty_Module(Faculty,Module_Name,Platform,Launch_Date,Link) VALUES(%s,%s,%s,%s,%s)',
+                                    (name, Module, platform, date, doclink,))
+                                conn.commit()
+                                statusbar['text'] = 'Hurray!! Record Added Successfully ' + name
+                                tkinter.messagebox.showinfo('Status',
+                                                            'New Record Added Succesfully\nFaculty Name : ' + str(
+                                                                name) + '\nModule Name : ' + str(
+                                                                Module) + '\nPlatform on which module is developed : ' + str(
+                                                                platform) + '\nDate of Launching : ' + str(
+                                                                date) + '\nLink for the module :' + str(
+                                                                doclink))
+                                time.sleep(1)
+                                rootadd.destroy()
+                                dir.menu()
+                            except:
+                                tkinter.messagebox.showerror("Invalid Module",
+                                                             "Either same module name or link has already being stored in the database...\nPlease enter a new one")
 
-                            else:
-                                tkinter.messagebox.showerror('Link Error', 'Please fill the Link of the document!!!')
                         else:
-                            tkinter.messagebox.showerror('Date Error',
-                                                         'Please fill the valid date\nFormat : DD/MM/YYYY or DD-MM-YYYY!!!')
+                            tkinter.messagebox.showerror('Link Error', 'Please fill the Link of the document!!!')
                     else:
-                        tkinter.messagebox.showerror('Platform not found Error', 'Please select a platform carefully!!!')
+                        tkinter.messagebox.showerror('Date Error',
+                                                     'Please fill the valid date\nFormat : DD/MM/YYYY or DD-MM-YYYY!!!')
                 else:
-                    tkinter.messagebox.showerror('Module Error', 'Hey! Did you forget your Module name?')
+                    tkinter.messagebox.showerror('Platform not found Error', 'Please select a platform carefully!!!')
             else:
-                tkinter.messagebox.showerror('Name Error', 'Hey! Seriously? Did you forget your fullname?')
+                tkinter.messagebox.showerror('Module Error', 'Hey! Did you forget your Module name?')
 
         statusbar = ttk.Label(rootadd, text="Ready to add a new module!! Lets go...", relief=SUNKEN, anchor=W,
                               font="Times 10 italic")
         statusbar.pack(side=BOTTOM, fill=X)
 
-        subbtn = ttk.Button(rootadd, text='Add Module', width=20, command=database)
+        subbtn = ttk.Button(rootadd, text='Add Module', width=40, command=database)
         subbtn.pack(side=BOTTOM, pady=20)
 
         leftframe = Frame(rootadd)
@@ -496,12 +492,14 @@ class add:
 
         label_1 = Label(leftframe, text="Faculty Full Name", font="fixedsys 10 normal")
         label_1.pack(pady=10)
-        entry_1 = ttk.Entry(rightframe, textvar=Fullname, width=60)
+        entry_1 = Label(rightframe, font="Times 12 normal", width=60)
         entry_1.pack(pady=10)
+        entry_1['text'] = fullname
+        entry_1['relief'] = SUNKEN
 
         label_2 = Label(leftframe, text="Name of Module", font="fixedsys 10 normal")
-        label_2.pack(pady=10)
-        entry_2 = ttk.Entry(rightframe, textvar=ModuleName, width=60)
+        label_2.pack(pady=15)
+        entry_2 = ttk.Entry(rightframe, font="Times 12 normal", textvar=ModuleName, width=68)
         entry_2.pack(pady=10)
 
         label_3 = Label(leftframe, text="Platform of module", font="fixedsys 10 normal")
@@ -509,23 +507,24 @@ class add:
         list = ['', 'E-PG-Pathshala', 'CEC(Under Graduate) ', 'SWAYAM', 'MOOCs platform',
                 'NPTEL/NMEICT/any other Government initiatives'];
         droplist = ttk.OptionMenu(rightframe, Platform, *list)
-        droplist.config(width=43)
+        droplist.config(width=65)
         Platform.set('Select your Platform')
         droplist.pack(pady=10)
 
         label_4 = Label(leftframe, text="Date of Launching", font="fixedsys 10 normal")
-        label_4.pack(pady=10)
-        entry_4 = ttk.Entry(rightframe, textvar=Date, width=60)
+        label_4.pack(pady=15)
+        entry_4 = ttk.Entry(rightframe, font="Times 12 normal", textvar=Date, width=68)
         entry_4.pack(pady=10)
 
         label_5 = Label(leftframe, text="Link of the document", font="fixedsys 10 normal")
         label_5.pack(pady=10)
-        entry_5 = ttk.Entry(rightframe, textvar=link, width=60)
+        entry_5 = ttk.Entry(rightframe, font="Times 12 normal", textvar=link, width=68)
         entry_5.pack(pady=10)
 
         rootadd.resizable(0, 0)
 
         rootadd.mainloop()
+
 
 class delete:
     def delmod(self):
@@ -648,6 +647,7 @@ class delete:
         rootdel.resizable(0, 0)
 
         rootdel.mainloop()
+
 
 class update:
     def upmod(self):
@@ -824,6 +824,7 @@ class update:
         rootup.resizable(0, 0)
 
         rootup.mainloop()
+
 
 start = firstpage()
 reg = sign_in()
